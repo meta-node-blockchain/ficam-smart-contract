@@ -38,12 +38,6 @@ pragma solidity 0.8.19;
         uint256 quantity;
         SubscriptionType typ;
     }
-    // struct ShippingInfo {
-    //     uint256 id;
-    //     uint256 orderID;
-    //     address userAddress;
-    //     ShippingParams params;
-    // }
     struct ShippingParams {
         string firstName;
         string lastName;
