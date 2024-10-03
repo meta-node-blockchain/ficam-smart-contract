@@ -1,6 +1,11 @@
 [profile.default]
-src = "src"
+src = "contracts"
 out = "out"
 libs = ["lib"]
+remappings = [
+    '@openzeppelin/contracts@v4.9.0=node_modules/@openzeppelin/contracts',
+    '@openzeppelin/contracts-upgradeable@v4.9.0=node_modules/@openzeppelin/contracts-upgradeable',
+    '@openzeppelin/contracts=node_modules/@openzeppelin/contracts'
+]
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

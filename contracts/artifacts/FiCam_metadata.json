@@ -1,0 +1,1806 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "payable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "buyer",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "orderId",
+						"type": "bytes32"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "productId",
+						"type": "bytes32"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "firstTimePay",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "nextTimePay",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "typSub",
+						"type": "uint256"
+					}
+				],
+				"name": "Hire",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "add",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "quantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "price",
+								"type": "uint256"
+							},
+							{
+								"internalType": "enum SUBCRIPTION_TYPE",
+								"name": "subTyp",
+								"type": "uint8"
+							},
+							{
+								"internalType": "uint256",
+								"name": "time",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bytes32",
+								"name": "id",
+								"type": "bytes32"
+							},
+							{
+								"internalType": "address",
+								"name": "from",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "to",
+								"type": "address"
+							}
+						],
+						"indexed": false,
+						"internalType": "struct FiCam.EventInput",
+						"name": "eventOrder",
+						"type": "tuple"
+					}
+				],
+				"name": "eBuyProduct",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "ActiveProduct",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_id",
+						"type": "bytes32"
+					}
+				],
+				"name": "AdminActiveProduct",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_imgUrl",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_desc",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_advantages",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_videoUrl",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_salePrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_rentalPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_monthlyPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_sixMonthsPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_yearlyPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_storageQuantity",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_remainTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "_active",
+						"type": "bool"
+					}
+				],
+				"name": "AdminAddProduct",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_id",
+						"type": "bytes32"
+					}
+				],
+				"name": "AdminDeactiveProduct",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_id",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_updateAt",
+						"type": "uint256"
+					}
+				],
+				"name": "AdminEditUpdateAt",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_id",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "string",
+						"name": "_imgUrl",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_desc",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_advantages",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_videoUrl",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_salePrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_rentalPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_monthlyPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_sixMonthsPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_yearlyPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_storageQuantity",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_remainTime",
+						"type": "uint256"
+					}
+				],
+				"name": "AdminUpdateProductInfo",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "AdminViewProduct",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "bytes32",
+								"name": "id",
+								"type": "bytes32"
+							},
+							{
+								"components": [
+									{
+										"internalType": "string",
+										"name": "imgUrl",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "name",
+										"type": "string"
+									},
+									{
+										"internalType": "bytes",
+										"name": "desc",
+										"type": "bytes"
+									},
+									{
+										"internalType": "string",
+										"name": "advantages",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "videoUrl",
+										"type": "string"
+									},
+									{
+										"internalType": "uint256",
+										"name": "salePrice",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "rentalPrice",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "monthlyPrice",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "sixMonthsPrice",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "yearlyPrice",
+										"type": "uint256"
+									}
+								],
+								"internalType": "struct createProductParams",
+								"name": "params",
+								"type": "tuple"
+							},
+							{
+								"internalType": "uint256",
+								"name": "storageQuantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "saleQuantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "hireQuantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "returnHiredQuantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "remainTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "updateAt",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bool",
+								"name": "active",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct Product[]",
+						"name": "products",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "Admins",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "IsAdmin",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "ListProductID",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "bytes32",
+								"name": "id",
+								"type": "bytes32"
+							},
+							{
+								"internalType": "uint256",
+								"name": "quantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "enum SUBCRIPTION_TYPE",
+								"name": "typ",
+								"type": "uint8"
+							}
+						],
+						"internalType": "struct OrderInput[]",
+						"name": "orderInputs",
+						"type": "tuple[]"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "firstName",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "lastName",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "email",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "country",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "city",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "stateOrProvince",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "postalCode",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "phone",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "addressDetail",
+								"type": "string"
+							}
+						],
+						"internalType": "struct ShippingParams",
+						"name": "shipParams",
+						"type": "tuple"
+					},
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					}
+				],
+				"name": "MakeOrder",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "MasterPool",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "OrderIDs",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "Owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_orderId",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "_idProduct",
+						"type": "bytes32"
+					}
+				],
+				"name": "RenewSub",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "SCUsdt",
+				"outputs": [
+					{
+						"internalType": "contract IERC20",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_admin",
+						"type": "address"
+					}
+				],
+				"name": "SetAdmin",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_masterPool",
+						"type": "address"
+					}
+				],
+				"name": "SetMasterPool",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_usdt",
+						"type": "address"
+					}
+				],
+				"name": "SetUsdt",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "UserViewProduct",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "bytes32",
+								"name": "id",
+								"type": "bytes32"
+							},
+							{
+								"components": [
+									{
+										"internalType": "string",
+										"name": "imgUrl",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "name",
+										"type": "string"
+									},
+									{
+										"internalType": "bytes",
+										"name": "desc",
+										"type": "bytes"
+									},
+									{
+										"internalType": "string",
+										"name": "advantages",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "videoUrl",
+										"type": "string"
+									},
+									{
+										"internalType": "uint256",
+										"name": "salePrice",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "rentalPrice",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "monthlyPrice",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "sixMonthsPrice",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "yearlyPrice",
+										"type": "uint256"
+									}
+								],
+								"internalType": "struct createProductParams",
+								"name": "params",
+								"type": "tuple"
+							},
+							{
+								"internalType": "uint256",
+								"name": "storageQuantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "saleQuantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "hireQuantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "returnHiredQuantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "remainTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "updateAt",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bool",
+								"name": "active",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct Product[]",
+						"name": "_products",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "Users",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_id",
+						"type": "bytes32"
+					}
+				],
+				"name": "ViewProduct",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "bytes32",
+								"name": "id",
+								"type": "bytes32"
+							},
+							{
+								"components": [
+									{
+										"internalType": "string",
+										"name": "imgUrl",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "name",
+										"type": "string"
+									},
+									{
+										"internalType": "bytes",
+										"name": "desc",
+										"type": "bytes"
+									},
+									{
+										"internalType": "string",
+										"name": "advantages",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "videoUrl",
+										"type": "string"
+									},
+									{
+										"internalType": "uint256",
+										"name": "salePrice",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "rentalPrice",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "monthlyPrice",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "sixMonthsPrice",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "yearlyPrice",
+										"type": "uint256"
+									}
+								],
+								"internalType": "struct createProductParams",
+								"name": "params",
+								"type": "tuple"
+							},
+							{
+								"internalType": "uint256",
+								"name": "storageQuantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "saleQuantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "hireQuantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "returnHiredQuantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "remainTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "updateAt",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bool",
+								"name": "active",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct Product",
+						"name": "rs",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_updateAt",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_index",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_limit",
+						"type": "uint256"
+					}
+				],
+				"name": "ViewProducts",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "bytes32",
+								"name": "id",
+								"type": "bytes32"
+							},
+							{
+								"components": [
+									{
+										"internalType": "string",
+										"name": "imgUrl",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "name",
+										"type": "string"
+									},
+									{
+										"internalType": "bytes",
+										"name": "desc",
+										"type": "bytes"
+									},
+									{
+										"internalType": "string",
+										"name": "advantages",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "videoUrl",
+										"type": "string"
+									},
+									{
+										"internalType": "uint256",
+										"name": "salePrice",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "rentalPrice",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "monthlyPrice",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "sixMonthsPrice",
+										"type": "uint256"
+									},
+									{
+										"internalType": "uint256",
+										"name": "yearlyPrice",
+										"type": "uint256"
+									}
+								],
+								"internalType": "struct createProductParams",
+								"name": "params",
+								"type": "tuple"
+							},
+							{
+								"internalType": "uint256",
+								"name": "storageQuantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "saleQuantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "hireQuantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "returnHiredQuantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "remainTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "updateAt",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bool",
+								"name": "active",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct Product[]",
+						"name": "rs",
+						"type": "tuple[]"
+					},
+					{
+						"internalType": "bool",
+						"name": "isMore",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "lastIndex",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "beginTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "endTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "sortedArray",
+						"type": "uint256[]"
+					}
+				],
+				"name": "countElementsInRange",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "count",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_productID",
+						"type": "bytes32"
+					}
+				],
+				"name": "getProductTrend",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_productID",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_from",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_to",
+						"type": "uint256"
+					}
+				],
+				"name": "getProductTrendByTime",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "count",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_productID",
+						"type": "bytes32"
+					}
+				],
+				"name": "getProductViewCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "buyer",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "_orderId",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "_idProduct",
+						"type": "bytes32"
+					}
+				],
+				"name": "getRentalInfo",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "retalAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "nextTime",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_orderId",
+						"type": "bytes32"
+					}
+				],
+				"name": "getShipInfo",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "firstName",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "lastName",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "email",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "country",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "city",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "stateOrProvince",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "postalCode",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "phone",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "addressDetail",
+								"type": "string"
+							}
+						],
+						"internalType": "struct ShippingParams",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_orderId",
+						"type": "bytes32"
+					}
+				],
+				"name": "getmIDTOOrder",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "bytes32",
+								"name": "id",
+								"type": "bytes32"
+							},
+							{
+								"internalType": "address",
+								"name": "customer",
+								"type": "address"
+							},
+							{
+								"components": [
+									{
+										"internalType": "bytes32",
+										"name": "id",
+										"type": "bytes32"
+									},
+									{
+										"internalType": "uint256",
+										"name": "quantity",
+										"type": "uint256"
+									},
+									{
+										"internalType": "enum SUBCRIPTION_TYPE",
+										"name": "typ",
+										"type": "uint8"
+									}
+								],
+								"internalType": "struct OrderInput[]",
+								"name": "products",
+								"type": "tuple[]"
+							},
+							{
+								"internalType": "uint256",
+								"name": "createAt",
+								"type": "uint256"
+							},
+							{
+								"components": [
+									{
+										"internalType": "string",
+										"name": "firstName",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "lastName",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "email",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "country",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "city",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "stateOrProvince",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "postalCode",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "phone",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "addressDetail",
+										"type": "string"
+									}
+								],
+								"internalType": "struct ShippingParams",
+								"name": "shipInfo",
+								"type": "tuple"
+							},
+							{
+								"internalType": "uint256",
+								"name": "shippingFee",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Order",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "mAddressTOOrderID",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"name": "mIDToProduct",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "id",
+						"type": "bytes32"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "imgUrl",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "bytes",
+								"name": "desc",
+								"type": "bytes"
+							},
+							{
+								"internalType": "string",
+								"name": "advantages",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "videoUrl",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "salePrice",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "rentalPrice",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "monthlyPrice",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "sixMonthsPrice",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "yearlyPrice",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct createProductParams",
+						"name": "params",
+						"type": "tuple"
+					},
+					{
+						"internalType": "uint256",
+						"name": "storageQuantity",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "saleQuantity",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "hireQuantity",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "returnHiredQuantity",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "remainTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "updateAt",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "active",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "mProductSearchTrend",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"name": "mProductViewCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "mShippingInfo",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "firstName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "lastName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "email",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "country",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "city",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "stateOrProvince",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "postalCode",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "phone",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "addressDetail",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "mShippingInfoByAddress",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "mShippingInfoByOrder",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "shippingCounter",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_productID",
+						"type": "bytes32"
+					}
+				],
+				"name": "updateViewCount",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/FiCam.sol": "FiCam"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": [
+			":ds-test/=lib/forge-std/lib/ds-test/src/",
+			":forge-std/=lib/forge-std/src/"
+		],
+		"viaIR": true
+	},
+	"sources": {
+		"@openzeppelin/contracts@v4.9.0/token/ERC20/IERC20.sol": {
+			"keccak256": "0x287b55befed2961a7eabd7d7b1b2839cbca8a5b80ef8dcbb25ed3d4c2002c305",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://bd39944e8fc06be6dbe2dd1d8449b5336e23c6a7ba3e8e9ae5ae0f37f35283f5",
+				"dweb:/ipfs/QmPV3FGYjVwvKSgAXKUN3r9T9GwniZz83CxBpM7vyj2G53"
+			]
+		},
+		"contracts/FiCam.sol": {
+			"keccak256": "0xe064c528c0ce81af5d3441a64750a1067e90856d8160fa4bff173926bc78a58b",
+			"license": "SEE LICENSE IN LICENSE",
+			"urls": [
+				"bzz-raw://c40dd17d69698642dbf7cd3491a999a72b2030b4fdbad2d758a5e76e228d1981",
+				"dweb:/ipfs/QmcfwjjwNskssd6m8MJKdGiErSG5CtiUbN8hsJe3JHMapr"
+			]
+		},
+		"contracts/interfaces/IFiCam.sol": {
+			"keccak256": "0xc48fe5d204c056d895321f38de1a4e61b1f15102ad39aea7ba19215298d27c9b",
+			"license": "SEE LICENSE IN LICENSE",
+			"urls": [
+				"bzz-raw://0a24f751190a155fb868c4cc78cea1deae326f49f0503a842207c6c1e09fdd54",
+				"dweb:/ipfs/QmaxzocLBGES2SqJm1dKYZm3WpLbxMUKUgngAVXUggCRuA"
+			]
+		},
+		"contracts/libs/ConvertTime.sol": {
+			"keccak256": "0x8d31ab561966f0febdf5e647afa619f88eb319fd9b371d98886fa2504f137cb6",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://5012f6ae12b334525d25215191c3676dc141428ad774db4d84f0ab517c94a5c7",
+				"dweb:/ipfs/QmQpftE18vuKiH6jhTAz3qqubPs8LZFSceTzvbYrp9o6sb"
+			]
+		},
+		"lib/forge-std/src/console.sol": {
+			"keccak256": "0x4bbf47eb762cef93729d6ef15e78789957147039b113e5d4df48e3d3fd16d0f5",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://af9e3a7c3d82fb5b10b57ca4d1a82f2acbef80c077f6f6ef0cc0187c7bfd9f57",
+				"dweb:/ipfs/QmR9VzmnBDJpgiDP6CHT6truehukF9HpYvuP6kRiJbDwPP"
+			]
+		}
+	},
+	"version": 1
+}
