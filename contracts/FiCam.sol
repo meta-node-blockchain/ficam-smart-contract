@@ -3,8 +3,10 @@ pragma solidity 0.8.19;
 import "./interfaces/IFiCam.sol";
 import "@openzeppelin/contracts@v4.9.0/token/ERC20/IERC20.sol";
 import "./libs/ConvertTime.sol";
-import "forge-std/console.sol";
-contract FiCam {
+import "./abstract/use_pos.sol";
+
+// import "forge-std/console.sol";
+contract FiCam is UsePos{
     bytes32[] public ListProductID;
     bytes32[] public ActiveProduct;
     address public MasterPool;
@@ -28,6 +30,7 @@ contract FiCam {
     mapping(address => mapping(bytes32 => mapping(bytes32 => OrderInput))) mRentalInput; //hirer => orderId => idProduct => rental pay
 
     bytes32[] public OrderIDs;
+    address public POS;
     struct EventInput {
         address add;
         uint256 quantity;
@@ -37,7 +40,13 @@ contract FiCam {
         bytes32 id;
         address from;
         address to;
+        bytes32 idPayment;
     }
+    enum ExecuteOrderType {
+        Order,
+        Renew
+    }
+
     event eBuyProduct(EventInput eventOrder);
     event Hire(
         address buyer,
@@ -46,7 +55,8 @@ contract FiCam {
         uint256 firstTimePay,
         uint256 nextTimePay,
         uint256 amount,
-        uint256 typSub
+        uint256 typSub,
+        bytes32 idPayment
     );
 
     constructor()payable{
@@ -67,6 +77,17 @@ contract FiCam {
             '{"from": "FiCam.sol", "code": 2, "message": "Invalid caller-Only Admin"}'
         );
         _;
+    }
+    modifier onlyPOS() {
+        require(
+            msg.sender == POS,
+            '{"from": "FiCam.sol", "code": 3, "message": "Only POS"}'
+        );
+        _;
+    }
+
+    function SetPOS(address _pos) external onlyOwner {
+        POS = _pos;
     }
     function SetUsdt(address _usdt) external onlyOwner {
         SCUsdt = IERC20(_usdt);
@@ -298,7 +319,8 @@ contract FiCam {
                 time: block.timestamp,
                 id: input.id,
                 from: msg.sender,
-                to: MasterPool
+                to: MasterPool,
+                idPayment: bytes32(0)
             });
             emit eBuyProduct(eventInput);
 
@@ -344,7 +366,16 @@ contract FiCam {
         nextTimePay[to][_orderId][input.id] = DateTimeLibrary.addMonths(block.timestamp,getMonth(input.typ));
         mRentalPay[to][_orderId][input.id] = rentalAmount;
         mRentalInput[to][_orderId][input.id] = input;
-        emit Hire(to,_orderId,input.id,block.timestamp,nextTimePay[to][_orderId][input.id],uint256(input.typ),rentalAmount);
+        emit Hire(
+            to,
+            _orderId,
+            input.id,
+            block.timestamp,
+            nextTimePay[to][_orderId][input.id],
+            uint256(input.typ),
+            rentalAmount,
+            bytes32(0)
+        );
     }
     function getRentalInfo(address hirer, bytes32 _orderId, bytes32 _idProduct)external view returns(uint256 rentalAmount,uint256 nextTime){
         rentalAmount = mRentalPay[hirer][_orderId][_idProduct] ;
@@ -357,7 +388,16 @@ contract FiCam {
         SCUsdt.transferFrom(msg.sender, MasterPool, rentalAmount);
         SUBCRIPTION_TYPE typSub = mRentalInput[to][_orderId][_idProduct].typ;
         nextTimePay[to][_orderId][_idProduct] = DateTimeLibrary.addMonths(nextTimePay[to][_orderId][_idProduct],getMonth(typSub));
-        emit Hire(to,_orderId,_idProduct,block.timestamp,nextTimePay[to][_orderId][_idProduct],rentalAmount,uint256(typSub));
+        emit Hire(
+            to,
+            _orderId,
+            _idProduct,
+            block.timestamp,
+            nextTimePay[to][_orderId][_idProduct],
+            rentalAmount,
+            uint256(typSub),
+            bytes32(0)
+        );
         return true;
     }
     function getMonth(SUBCRIPTION_TYPE typ)internal pure returns(uint256 month){
@@ -424,6 +464,172 @@ contract FiCam {
         }
 
         return isLowerBound ? left : (left == 0 ? 0 : left - 1);
+    }
+    function AdminViewOrder(address _to) external view onlyAdmin returns (Order[] memory orders){
+        orders = new Order[](mAddressTOOrderID[_to].length);
+        for (uint256 index = 0; index < mAddressTOOrderID[_to].length; index++) {
+            orders[index] = mIDTOOrder[mAddressTOOrderID[_to][index]];
+        }
+    }
+    function GetMyOrder(uint32 _page,uint returnRIP) 
+    external 
+    view 
+    returns(bool isMore, Order[] memory arrayOrder) {
+        
+        bytes32[] memory idArr = new bytes32[](mAddressTOOrderID[msg.sender].length);
+        idArr = mAddressTOOrderID[msg.sender];
+        // uint256 length = idArr.length;
+        if (_page * returnRIP > idArr.length + returnRIP) { 
+            return(false, arrayOrder);
+        } else {
+            if (_page*returnRIP < idArr.length ) {
+                isMore = true;
+                arrayOrder = new Order[](returnRIP);
+                for (uint i = 0; i < arrayOrder.length; i++) {
+                    arrayOrder[i] = mIDTOOrder[idArr[_page*returnRIP - returnRIP +i]];
+                }
+                return (isMore, arrayOrder);
+            } else {
+                isMore = false;
+                arrayOrder = new Order[](returnRIP -(_page*returnRIP - idArr.length));
+                for (uint i = 0; i < arrayOrder.length; i++) {
+                    arrayOrder[i] = mIDTOOrder[idArr[_page*returnRIP - returnRIP +i]];
+                }
+                return (isMore, arrayOrder);
+            }
+        }
+    }
+
+    function CallDataOrder(
+        OrderInput[] memory _input,
+        ShippingParams memory _shipParams,       
+        address _address
+    ) public pure returns (bytes memory callData) {
+        return abi.encode(_input,_shipParams, _address);
+    }
+    function CallDataRenew(
+        bytes32 _orderId, 
+        bytes32 _idProduct
+    ) public pure returns (bytes memory callData) {
+        return abi.encode(_orderId,_idProduct);
+    }
+
+    function GetCallData(
+        bytes memory callData,
+        ExecuteOrderType typ
+    )public pure returns(bytes memory action){
+        return abi.encode(callData,typ);
+    }
+    function ExecuteOrder(
+        bytes memory callData,
+        bytes32 orderId,
+        uint256 paymentAmount
+    ) public override onlyPOS returns (bool) {
+        (bytes memory action, ExecuteOrderType typ) = abi.decode(
+            callData,
+            (bytes, ExecuteOrderType)
+        );
+        if (typ == ExecuteOrderType.Order) {
+            return OrderLock(action, orderId, paymentAmount);
+        }
+
+        if (typ == ExecuteOrderType.Renew) {
+            return RenewSubLock(action, orderId, paymentAmount);
+        }
+        return false;
+    }
+
+    function OrderLock(
+        bytes memory callData,
+        bytes32 idPayment,
+        uint256 paymentAmount
+    ) internal returns (bool) {
+        (OrderInput[] memory orderInputs, ShippingParams memory shipParams,address to) = abi.decode(
+            callData,
+            (OrderInput[],ShippingParams, address)
+        );
+
+        bytes32 orderId = keccak256(abi.encodePacked(to, orderInputs.length, block.timestamp));
+        uint totalPrice;
+        for (uint i = 0; i < orderInputs.length; i++) {
+            OrderInput memory input = orderInputs[i];
+            require(
+                mIDToProduct[input.id].id != bytes32(0),
+                '{"from": "FiCam.sol", "code": 4, "message": "Invalid product ID or product does not exist"}'
+            );
+            require(uint256(input.typ) < 4,"Invalid subscription type");
+            Product storage product = mIDToProduct[input.id];
+            require(product.storageQuantity > 0, "product storage is not enough");
+            //
+            if (input.typ == SUBCRIPTION_TYPE.NONE) {
+                product.storageQuantity -= input.quantity;
+                product.saleQuantity += input.quantity; 
+                totalPrice += product.params.salePrice * input.quantity;
+            }else{
+                uint256 rentalPrice = _rent(input,orderId,to);
+                totalPrice += rentalPrice;
+            }
+            EventInput memory eventInput = EventInput({
+                add: to,
+                quantity: input.quantity,
+                price: product.params.salePrice,
+                subTyp: input.typ,
+                time: block.timestamp,
+                id: input.id,
+                from: msg.sender,
+                to: MasterPool,
+                idPayment: idPayment
+            });
+            emit eBuyProduct(eventInput);
+
+        }
+        require(
+            paymentAmount >= totalPrice , 
+            '{"from": "FiCam.sol", "code": 8, "message": "Insufficient payment amount"}'
+        );
+        Order memory order = Order({
+            id: orderId,
+            customer: to,
+            products: orderInputs,
+            createAt: block.timestamp,
+            shipInfo: shipParams,
+            shippingFee: 5
+        });
+        mIDTOOrder[orderId] = order;
+        mAddressTOOrderID[to].push(orderId);
+        Users.push(to);
+        OrderIDs.push(orderId);
+        return true;    
+    }
+    function RenewSubLock(
+        bytes memory callData,
+        bytes32 idPayment,
+        uint256 paymentAmount       
+    ) internal returns(bool) {
+        (bytes32 _orderId, bytes32 _idProduct) = abi.decode(
+            callData,
+            (bytes32,bytes32)
+        );
+        address to = mIDTOOrder[_orderId].customer;
+        uint256 rentalAmount = mRentalPay[to][_orderId][_idProduct];
+        require(
+            paymentAmount >= rentalAmount,
+            '{"from": "FiCam.sol", "code": 8, "message": "Insufficient payment amount"}'
+
+        );
+        SUBCRIPTION_TYPE typSub = mRentalInput[to][_orderId][_idProduct].typ;
+        nextTimePay[to][_orderId][_idProduct] = DateTimeLibrary.addMonths(nextTimePay[to][_orderId][_idProduct],getMonth(typSub));
+        emit Hire(
+            to,
+            _orderId,
+            _idProduct,
+            block.timestamp,
+            nextTimePay[to][_orderId][_idProduct],
+            rentalAmount,
+            uint256(typSub),
+            idPayment
+        );
+        return true;
     }
 
 }

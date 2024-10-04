@@ -15,6 +15,7 @@ contract FiCamTest is Test {
     address public Deployer = address(0x1);
     address public buyer = address(0x2);
     address public hirer = address(0x3);
+    address public pos = address(0x4);
     ShippingParams public shipParams;
     constructor() {
         vm.startPrank(Deployer);
@@ -23,7 +24,9 @@ contract FiCamTest is Test {
         MONEY_POOL = new MasterPool(address(USDT_ERC));
         FICAM.SetUsdt(address(USDT_ERC));
         FICAM.SetMasterPool(address(MONEY_POOL));
+        FICAM.SetPOS(pos);
         vm.stopPrank();
+        AddProduct();
     }
     function mintUSDT(address user, uint256 amount) internal {
         vm.startPrank(Deployer);
@@ -31,7 +34,7 @@ contract FiCamTest is Test {
         vm.stopPrank();
     }
 
-    function testOrder() public {
+    function AddProduct() public {
         vm.startPrank(Deployer);
         uint256 salePrice = 1250 *ONE_USDT;
         uint256 rentalPrice = 450 *ONE_USDT;
@@ -75,13 +78,15 @@ contract FiCamTest is Test {
             phone: "phone",
             addressDetail: "addressDetail"
         });
-
-        buyProduct(products);
-        hireProduct();
-        hireAndBuyProducts();
     }
-    function buyProduct(Product[] memory products)public{
+    function testBuyAndHire() public {
+        buyProduct();
+        hireProduct();
+
+    }
+    function buyProduct()public{
         vm.startPrank(buyer);
+        Product[] memory products = FICAM.UserViewProduct();
         uint256 storageBefore = products[0].storageQuantity;
         assertEq(storageBefore,100,"should equal");
         assertEq(products[0].saleQuantity,0,"should equal");
@@ -139,7 +144,63 @@ contract FiCamTest is Test {
         vm.stopPrank();       
 
     }
-    function hireAndBuyProducts()public{
-        
+    function testBuyAndHireVisa()public{
+        vm.startPrank(pos);
+        vm.warp(1727930499); // 3/10/2024
+        Product[] memory products = FICAM.UserViewProduct();
+        bytes32 idPayment =  0x0000000000000000000000000000000000000000000000000000000000000001 ;
+        uint256 storageBefore = products[0].storageQuantity;
+        assertEq(storageBefore,100,"should equal");
+        assertEq(products[0].saleQuantity,0,"should equal");
+        OrderInput[] memory orderLockInputs= new OrderInput[](2);
+        OrderInput memory inputBuy = OrderInput({
+            id: products[0].id,
+            quantity: 5,
+            typ: SUBCRIPTION_TYPE.NONE
+        });
+        OrderInput memory inputHire = OrderInput({
+            id: products[0].id,
+            quantity: 10,
+            typ: SUBCRIPTION_TYPE.MONTHLY
+        });
+
+        orderLockInputs[0] = inputBuy;
+        orderLockInputs[1] = inputHire;
+        bytes memory callData = FICAM.CallDataOrder(
+            orderLockInputs,
+            shipParams,
+            buyer
+        );
+        uint256 paymentAmount = (5*1250 + 10*(450+68))*ONE_USDT;
+        bytes memory getCallData = FICAM.GetCallData(callData,FiCam.ExecuteOrderType.Order);
+        FICAM.ExecuteOrder(getCallData,idPayment,paymentAmount);
+        Product[] memory productsAfter = FICAM.UserViewProduct();
+        uint256 storageAfter = productsAfter[0].storageQuantity;
+        assertEq(storageAfter,85,"should equal");
+        assertEq(productsAfter[0].saleQuantity,5,"should equal");
+        assertEq(productsAfter[0].hireQuantity,10,"should equal");
+        assertEq(USDT_ERC.balanceOf(address(MONEY_POOL)),0,"should equal");
+        vm.stopPrank();  
+        vm.startPrank(Deployer);
+        Order[] memory orders = FICAM.AdminViewOrder(buyer);
+        (uint256 rentalAmount ,uint256 nextTime) = FICAM.getRentalInfo(buyer,orders[0].id,products[0].id);
+        assertEq(rentalAmount,68*10*ONE_USDT,"should equal");
+        uint256 expectedNextTime = 1730608899; // 3/11/2024
+        assertEq(nextTime,expectedNextTime ,"should equal"); 
+        vm.stopPrank();
+        //renew
+        vm.startPrank(pos);
+        callData = FICAM.CallDataRenew(
+            orders[0].id,
+            products[0].id
+        );
+        paymentAmount = (68*10)*ONE_USDT;
+        getCallData = FICAM.GetCallData(callData,FiCam.ExecuteOrderType.Renew);
+        FICAM.ExecuteOrder(getCallData,idPayment,paymentAmount);
+        (rentalAmount ,nextTime) = FICAM.getRentalInfo(buyer,orders[0].id,products[0].id);
+        assertEq(rentalAmount,68*10*ONE_USDT,"should equal");
+        expectedNextTime = 1733200899; // 3/12/2024
+        assertEq(nextTime,expectedNextTime ,"should equal"); 
+        vm.stopPrank();   
     }
 }

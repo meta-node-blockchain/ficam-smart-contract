@@ -54,6 +54,12 @@
 						"internalType": "uint256",
 						"name": "typSub",
 						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "idPayment",
+						"type": "bytes32"
 					}
 				],
 				"name": "Hire",
@@ -103,6 +109,11 @@
 								"internalType": "address",
 								"name": "to",
 								"type": "address"
+							},
+							{
+								"internalType": "bytes32",
+								"name": "idPayment",
+								"type": "bytes32"
 							}
 						],
 						"indexed": false,
@@ -343,6 +354,121 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					}
+				],
+				"name": "AdminViewOrder",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "bytes32",
+								"name": "id",
+								"type": "bytes32"
+							},
+							{
+								"internalType": "address",
+								"name": "customer",
+								"type": "address"
+							},
+							{
+								"components": [
+									{
+										"internalType": "bytes32",
+										"name": "id",
+										"type": "bytes32"
+									},
+									{
+										"internalType": "uint256",
+										"name": "quantity",
+										"type": "uint256"
+									},
+									{
+										"internalType": "enum SUBCRIPTION_TYPE",
+										"name": "typ",
+										"type": "uint8"
+									}
+								],
+								"internalType": "struct OrderInput[]",
+								"name": "products",
+								"type": "tuple[]"
+							},
+							{
+								"internalType": "uint256",
+								"name": "createAt",
+								"type": "uint256"
+							},
+							{
+								"components": [
+									{
+										"internalType": "string",
+										"name": "firstName",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "lastName",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "email",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "country",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "city",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "stateOrProvince",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "postalCode",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "phone",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "addressDetail",
+										"type": "string"
+									}
+								],
+								"internalType": "struct ShippingParams",
+								"name": "shipInfo",
+								"type": "tuple"
+							},
+							{
+								"internalType": "uint256",
+								"name": "shippingFee",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Order[]",
+						"name": "orders",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "AdminViewProduct",
 				"outputs": [
@@ -468,6 +594,320 @@
 						"internalType": "address",
 						"name": "",
 						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "bytes32",
+								"name": "id",
+								"type": "bytes32"
+							},
+							{
+								"internalType": "uint256",
+								"name": "quantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "enum SUBCRIPTION_TYPE",
+								"name": "typ",
+								"type": "uint8"
+							}
+						],
+						"internalType": "struct OrderInput[]",
+						"name": "_input",
+						"type": "tuple[]"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "firstName",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "lastName",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "email",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "country",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "city",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "stateOrProvince",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "postalCode",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "phone",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "addressDetail",
+								"type": "string"
+							}
+						],
+						"internalType": "struct ShippingParams",
+						"name": "_shipParams",
+						"type": "tuple"
+					},
+					{
+						"internalType": "address",
+						"name": "_address",
+						"type": "address"
+					}
+				],
+				"name": "CallDataOrder",
+				"outputs": [
+					{
+						"internalType": "bytes",
+						"name": "callData",
+						"type": "bytes"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_orderId",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "_idProduct",
+						"type": "bytes32"
+					}
+				],
+				"name": "CallDataRenew",
+				"outputs": [
+					{
+						"internalType": "bytes",
+						"name": "callData",
+						"type": "bytes"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes",
+						"name": "callData",
+						"type": "bytes"
+					}
+				],
+				"name": "CheckCallData",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes",
+						"name": "callData",
+						"type": "bytes"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "orderId",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "paymentAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "ExecuteOrder",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes",
+						"name": "callData",
+						"type": "bytes"
+					},
+					{
+						"internalType": "enum FiCam.ExecuteOrderType",
+						"name": "typ",
+						"type": "uint8"
+					}
+				],
+				"name": "GetCallData",
+				"outputs": [
+					{
+						"internalType": "bytes",
+						"name": "action",
+						"type": "bytes"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint32",
+						"name": "_page",
+						"type": "uint32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "returnRIP",
+						"type": "uint256"
+					}
+				],
+				"name": "GetMyOrder",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "isMore",
+						"type": "bool"
+					},
+					{
+						"components": [
+							{
+								"internalType": "bytes32",
+								"name": "id",
+								"type": "bytes32"
+							},
+							{
+								"internalType": "address",
+								"name": "customer",
+								"type": "address"
+							},
+							{
+								"components": [
+									{
+										"internalType": "bytes32",
+										"name": "id",
+										"type": "bytes32"
+									},
+									{
+										"internalType": "uint256",
+										"name": "quantity",
+										"type": "uint256"
+									},
+									{
+										"internalType": "enum SUBCRIPTION_TYPE",
+										"name": "typ",
+										"type": "uint8"
+									}
+								],
+								"internalType": "struct OrderInput[]",
+								"name": "products",
+								"type": "tuple[]"
+							},
+							{
+								"internalType": "uint256",
+								"name": "createAt",
+								"type": "uint256"
+							},
+							{
+								"components": [
+									{
+										"internalType": "string",
+										"name": "firstName",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "lastName",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "email",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "country",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "city",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "stateOrProvince",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "postalCode",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "phone",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "addressDetail",
+										"type": "string"
+									}
+								],
+								"internalType": "struct ShippingParams",
+								"name": "shipInfo",
+								"type": "tuple"
+							},
+							{
+								"internalType": "uint256",
+								"name": "shippingFee",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct Order[]",
+						"name": "arrayOrder",
+						"type": "tuple[]"
 					}
 				],
 				"stateMutability": "view",
@@ -650,6 +1090,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "POS",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "bytes32",
@@ -708,6 +1161,19 @@
 					}
 				],
 				"name": "SetMasterPool",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_pos",
+						"type": "address"
+					}
+				],
+				"name": "SetPOS",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -1212,7 +1678,7 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "buyer",
+						"name": "hirer",
 						"type": "address"
 					},
 					{
@@ -1230,7 +1696,7 @@
 				"outputs": [
 					{
 						"internalType": "uint256",
-						"name": "retalAmount",
+						"name": "rentalAmount",
 						"type": "uint256"
 					},
 					{
@@ -1732,12 +2198,37 @@
 		],
 		"devdoc": {
 			"kind": "dev",
-			"methods": {},
+			"methods": {
+				"CheckCallData(bytes)": {
+					"params": {
+						"callData": ": is ID (uint256) "
+					},
+					"returns": {
+						"_0": "bool: result of callData validataion."
+					}
+				},
+				"ExecuteOrder(bytes,bytes32,uint256)": {
+					"params": {
+						"callData": ": called smart contract will decode calldata to execute its domain logic",
+						"orderId": ": orderId is generated by POS smart contract"
+					},
+					"returns": {
+						"_0": "bool: result after run ExecuteOrder"
+					}
+				}
+			},
 			"version": 1
 		},
 		"userdoc": {
 			"kind": "user",
-			"methods": {},
+			"methods": {
+				"CheckCallData(bytes)": {
+					"notice": "Smart contract POS call CheckCallData to targeted smart contract before creating orderId  in order to ensure client call to targeted smart contract to set up data before calling createOrder of smart contract POS"
+				},
+				"ExecuteOrder(bytes,bytes32,uint256)": {
+					"notice": "Smart contract POS call ExecuteOrder of targeted smart contract"
+				}
+			},
 			"version": 1
 		}
 	},
@@ -1770,11 +2261,19 @@
 			]
 		},
 		"contracts/FiCam.sol": {
-			"keccak256": "0xe064c528c0ce81af5d3441a64750a1067e90856d8160fa4bff173926bc78a58b",
+			"keccak256": "0x515acc3a067a59d1c58324f49222a14e4032cf51153a543bb699981f75767009",
 			"license": "SEE LICENSE IN LICENSE",
 			"urls": [
-				"bzz-raw://c40dd17d69698642dbf7cd3491a999a72b2030b4fdbad2d758a5e76e228d1981",
-				"dweb:/ipfs/QmcfwjjwNskssd6m8MJKdGiErSG5CtiUbN8hsJe3JHMapr"
+				"bzz-raw://b91bc98db04293b6cdbb5c73aacb53cc8194a81818a1ef0705f16a42deddb3c8",
+				"dweb:/ipfs/QmP1cdSwRjvaunx9ZZHLeuFLDqgzDYNVc17Kk5qeJVHPwf"
+			]
+		},
+		"contracts/abstract/use_pos.sol": {
+			"keccak256": "0xcd5c533e60badaecde1d6435dbf6588be7601ec1b153e493d1101dede3cefb55",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://5268338a537cec2ab4504aabd1295cfaa84cc354e40c7a4920ee96441b66bf9f",
+				"dweb:/ipfs/QmdzX5yopc8M6gjLc39Y28ttNcxJBJ1XnEcQ1XAaoBewaV"
 			]
 		},
 		"contracts/interfaces/IFiCam.sol": {
@@ -1791,14 +2290,6 @@
 			"urls": [
 				"bzz-raw://5012f6ae12b334525d25215191c3676dc141428ad774db4d84f0ab517c94a5c7",
 				"dweb:/ipfs/QmQpftE18vuKiH6jhTAz3qqubPs8LZFSceTzvbYrp9o6sb"
-			]
-		},
-		"lib/forge-std/src/console.sol": {
-			"keccak256": "0x4bbf47eb762cef93729d6ef15e78789957147039b113e5d4df48e3d3fd16d0f5",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://af9e3a7c3d82fb5b10b57ca4d1a82f2acbef80c077f6f6ef0cc0187c7bfd9f57",
-				"dweb:/ipfs/QmR9VzmnBDJpgiDP6CHT6truehukF9HpYvuP6kRiJbDwPP"
 			]
 		}
 	},
