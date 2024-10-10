@@ -15,6 +15,137 @@
 				"inputs": [
 					{
 						"indexed": false,
+						"internalType": "string",
+						"name": "email",
+						"type": "string"
+					},
+					{
+						"components": [
+							{
+								"internalType": "bytes32",
+								"name": "id",
+								"type": "bytes32"
+							},
+							{
+								"internalType": "address",
+								"name": "customer",
+								"type": "address"
+							},
+							{
+								"components": [
+									{
+										"internalType": "bytes32",
+										"name": "id",
+										"type": "bytes32"
+									},
+									{
+										"internalType": "uint256",
+										"name": "quantity",
+										"type": "uint256"
+									},
+									{
+										"internalType": "enum SUBCRIPTION_TYPE",
+										"name": "typ",
+										"type": "uint8"
+									},
+									{
+										"internalType": "string",
+										"name": "productName",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "imgUrl",
+										"type": "string"
+									}
+								],
+								"internalType": "struct OrderDetail[]",
+								"name": "products",
+								"type": "tuple[]"
+							},
+							{
+								"internalType": "uint256",
+								"name": "createAt",
+								"type": "uint256"
+							},
+							{
+								"components": [
+									{
+										"internalType": "string",
+										"name": "firstName",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "lastName",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "email",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "country",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "city",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "stateOrProvince",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "postalCode",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "phone",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "addressDetail",
+										"type": "string"
+									}
+								],
+								"internalType": "struct ShippingParams",
+								"name": "shipInfo",
+								"type": "tuple"
+							},
+							{
+								"internalType": "uint256",
+								"name": "shippingFee",
+								"type": "uint256"
+							}
+						],
+						"indexed": false,
+						"internalType": "struct Order",
+						"name": "order",
+						"type": "tuple"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "totalPrice",
+						"type": "uint256"
+					}
+				],
+				"name": "EmailOrder",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
 						"internalType": "address",
 						"name": "buyer",
 						"type": "address"
@@ -391,9 +522,19 @@
 										"internalType": "enum SUBCRIPTION_TYPE",
 										"name": "typ",
 										"type": "uint8"
+									},
+									{
+										"internalType": "string",
+										"name": "productName",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "imgUrl",
+										"type": "string"
 									}
 								],
-								"internalType": "struct OrderInput[]",
+								"internalType": "struct OrderDetail[]",
 								"name": "products",
 								"type": "tuple[]"
 							},
@@ -836,9 +977,19 @@
 										"internalType": "enum SUBCRIPTION_TYPE",
 										"name": "typ",
 										"type": "uint8"
+									},
+									{
+										"internalType": "string",
+										"name": "productName",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "imgUrl",
+										"type": "string"
 									}
 								],
-								"internalType": "struct OrderInput[]",
+								"internalType": "struct OrderDetail[]",
 								"name": "products",
 								"type": "tuple[]"
 							},
@@ -1812,9 +1963,19 @@
 										"internalType": "enum SUBCRIPTION_TYPE",
 										"name": "typ",
 										"type": "uint8"
+									},
+									{
+										"internalType": "string",
+										"name": "productName",
+										"type": "string"
+									},
+									{
+										"internalType": "string",
+										"name": "imgUrl",
+										"type": "string"
 									}
 								],
-								"internalType": "struct OrderInput[]",
+								"internalType": "struct OrderDetail[]",
 								"name": "products",
 								"type": "tuple[]"
 							},
@@ -2261,11 +2422,11 @@
 			]
 		},
 		"contracts/FiCam.sol": {
-			"keccak256": "0x515acc3a067a59d1c58324f49222a14e4032cf51153a543bb699981f75767009",
+			"keccak256": "0xa2f2a0d658c95422aea3981ed9373f52f7e309678fdfd7ea500ae2eb2fce38bb",
 			"license": "SEE LICENSE IN LICENSE",
 			"urls": [
-				"bzz-raw://b91bc98db04293b6cdbb5c73aacb53cc8194a81818a1ef0705f16a42deddb3c8",
-				"dweb:/ipfs/QmP1cdSwRjvaunx9ZZHLeuFLDqgzDYNVc17Kk5qeJVHPwf"
+				"bzz-raw://26dd2e8583dd5aa96f9ff0efd7399719e3c8b6e7154a696f83d4c6b38c05d82e",
+				"dweb:/ipfs/QmWpQV7XZJdbmKTJZip1ZcSpfMroa8HVPvReNrxs4GdKAU"
 			]
 		},
 		"contracts/abstract/use_pos.sol": {
@@ -2277,11 +2438,11 @@
 			]
 		},
 		"contracts/interfaces/IFiCam.sol": {
-			"keccak256": "0xc48fe5d204c056d895321f38de1a4e61b1f15102ad39aea7ba19215298d27c9b",
+			"keccak256": "0x1cd4b59ed8f880b5e468d237052a5f48ffcedf1a1d840ec9e8790ad5f178c571",
 			"license": "SEE LICENSE IN LICENSE",
 			"urls": [
-				"bzz-raw://0a24f751190a155fb868c4cc78cea1deae326f49f0503a842207c6c1e09fdd54",
-				"dweb:/ipfs/QmaxzocLBGES2SqJm1dKYZm3WpLbxMUKUgngAVXUggCRuA"
+				"bzz-raw://bf80bebb30d76648a1bbe63e998ae15ba44ad95367abcec22626054b833eedb6",
+				"dweb:/ipfs/QmRyA1h8UUqL8LyugS2Y3jMvDYxNTDL4ihd51TsjwrVSYt"
 			]
 		},
 		"contracts/libs/ConvertTime.sol": {

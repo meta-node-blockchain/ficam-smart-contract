@@ -26,16 +26,10 @@ struct createProductParams {
     uint256 yearlyPrice;
 }
 
-// struct OrderProduct {
-//     bytes32 idProduct;
-//     uint256 quantity;
-//     SubscriptionType subType;
-// }
-
 struct Order {
     bytes32 id;
     address customer;
-    OrderInput[] products;
+    OrderDetail[] products;
     uint256 createAt;
     ShippingParams shipInfo;
     uint256 shippingFee;
@@ -45,6 +39,13 @@ struct OrderInput {
     bytes32 id;
     uint256 quantity;
     SUBCRIPTION_TYPE typ;
+}
+struct OrderDetail {
+    bytes32 id;
+    uint256 quantity;
+    SUBCRIPTION_TYPE typ;
+    string productName;
+    string imgUrl;
 }
 
 struct ShippingParams {

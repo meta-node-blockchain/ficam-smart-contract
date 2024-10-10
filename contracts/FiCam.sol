@@ -58,7 +58,7 @@ contract FiCam is UsePos{
         uint256 typSub,
         bytes32 idPayment
     );
-
+    event EmailOrder(string email, Order order,uint256 totalPrice);
     constructor()payable{
         Owner = msg.sender;
         SCUsdt = IERC20(address(0x0000000000000000000000000000000000000002));
@@ -293,6 +293,7 @@ contract FiCam is UsePos{
     ) external returns(bytes32){
         bytes32 orderId = keccak256(abi.encodePacked(to, orderInputs.length, block.timestamp));
         uint totalPrice;
+        OrderDetail[] memory orderDetails = new OrderDetail[](orderInputs.length);
         for (uint i = 0; i < orderInputs.length; i++) {
             OrderInput memory input = orderInputs[i];
             require(
@@ -323,13 +324,20 @@ contract FiCam is UsePos{
                 idPayment: bytes32(0)
             });
             emit eBuyProduct(eventInput);
-
+            OrderDetail memory orderDetail = OrderDetail({
+                id : orderInputs[i].id,
+                quantity : orderInputs[i].quantity,
+                typ : orderInputs[i].typ,
+                productName : product.params.name,
+                imgUrl : product.params.imgUrl
+            });
+            orderDetails[i]=orderDetail;
         }
         require(SCUsdt.transferFrom(msg.sender, MasterPool, totalPrice), "Token transfer failed");
         Order memory order = Order({
             id: orderId,
             customer: to,
-            products: orderInputs,
+            products: orderDetails,
             createAt: block.timestamp,
             shipInfo: shipParams,
             shippingFee: 5
@@ -338,6 +346,7 @@ contract FiCam is UsePos{
         mAddressTOOrderID[to].push(orderId);
         Users.push(to);
         OrderIDs.push(orderId);
+        emit EmailOrder(shipParams.email,order,totalPrice);
         return orderId;
     }
 
@@ -551,6 +560,7 @@ contract FiCam is UsePos{
 
         bytes32 orderId = keccak256(abi.encodePacked(to, orderInputs.length, block.timestamp));
         uint totalPrice;
+        OrderDetail[] memory orderDetails = new OrderDetail[](orderInputs.length);
         for (uint i = 0; i < orderInputs.length; i++) {
             OrderInput memory input = orderInputs[i];
             require(
@@ -581,7 +591,14 @@ contract FiCam is UsePos{
                 idPayment: idPayment
             });
             emit eBuyProduct(eventInput);
-
+            OrderDetail memory orderDetail = OrderDetail({
+                id : orderInputs[i].id,
+                quantity : orderInputs[i].quantity,
+                typ : orderInputs[i].typ,
+                productName : product.params.name,
+                imgUrl : product.params.imgUrl
+            });
+            orderDetails[i]=orderDetail;
         }
         require(
             paymentAmount >= totalPrice , 
@@ -590,7 +607,7 @@ contract FiCam is UsePos{
         Order memory order = Order({
             id: orderId,
             customer: to,
-            products: orderInputs,
+            products: orderDetails,
             createAt: block.timestamp,
             shipInfo: shipParams,
             shippingFee: 5
@@ -599,6 +616,7 @@ contract FiCam is UsePos{
         mAddressTOOrderID[to].push(orderId);
         Users.push(to);
         OrderIDs.push(orderId);
+        emit EmailOrder(shipParams.email,order,paymentAmount);
         return true;    
     }
     function RenewSubLock(

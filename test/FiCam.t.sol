@@ -13,8 +13,8 @@ contract FiCamTest is Test {
     MasterPool public MONEY_POOL;
     uint256 ONE_USDT = 1_000_000;
     address public Deployer = address(0x1);
-    address public buyer = address(0x2);
-    address public hirer = address(0x3);
+    address public buyer = 0xB50b908fFd42d2eDb12b325e75330c1AaAf35dc0;
+    address public hirer = 0xB50b908fFd42d2eDb12b325e75330c1AaAf35dc0;
     address public pos = address(0x4);
     ShippingParams public shipParams;
     constructor() {
@@ -44,10 +44,23 @@ contract FiCamTest is Test {
         uint256 storageQuantity= 100;
         uint256 _remainTime = 20000;
         FICAM.AdminAddProduct(
+            // "https://i.postimg.cc/ZKqJjbss/500.png","dragon ball","_desc","_advantages","_videoUrl",
             "_imgUrl","_name","_desc","_advantages","_videoUrl",
             salePrice,rentalPrice,monthlyPrice,sixMonthsPrice,yearlyPrice,storageQuantity,
             _remainTime,true
         );
+        // bytes memory bytesCodeCall = abi.encodeCall(
+        //     FICAM.AdminAddProduct,
+        //     ("_imgUrl","_name","_desc","_advantages","_videoUrl",
+        //     salePrice,rentalPrice,monthlyPrice,sixMonthsPrice,yearlyPrice,storageQuantity,
+        //     _remainTime,true
+        //     )
+        // );
+        // console.log("AdminAddProduct 1:");
+        // console.logBytes(bytesCodeCall);
+        // console.log(
+        //     "-----------------------------------------------------------------------------"
+        // );  
         uint256 salePrice1 = 200 *ONE_USDT;
         uint256 rentalPrice1 = 90 *ONE_USDT;
         uint256 monthlyPrice1 = 40 *ONE_USDT;
@@ -56,10 +69,25 @@ contract FiCamTest is Test {
         uint256 storageQuantity1= 200;
         uint256 _remainTime1 = 40000;
         FICAM.AdminAddProduct(
+            // "https://i.postimg.cc/kXCcJxt3/5000.png","crystal palace","_desc1","_advantages1","_videoUrl1",
             "_imgUrl1","_name1","_desc1","_advantages1","_videoUrl1",
             salePrice1,rentalPrice1,monthlyPrice1,sixMonthsPrice1,yearlyPrice1,storageQuantity1,
             _remainTime1,true
         );
+        // bytesCodeCall = abi.encodeCall(
+        //     FICAM.AdminAddProduct,
+        //     ("_imgUrl1","_name1","_desc1","_advantages1","_videoUrl1",
+        //     salePrice1,rentalPrice1,monthlyPrice1,sixMonthsPrice1,yearlyPrice1,storageQuantity1,
+        //     _remainTime1,true
+
+        //     )
+        // );
+        // console.log("AdminAddProduct 2:");
+        // console.logBytes(bytesCodeCall);
+        // console.log(
+        //     "-----------------------------------------------------------------------------"
+        // );  
+
         Product[] memory products = FICAM.UserViewProduct();
         assertEq(products.length,2,"should equal");
         assertEq(products[0].params.salePrice,1250 *ONE_USDT,"should equal");
@@ -68,15 +96,15 @@ contract FiCamTest is Test {
 
         vm.stopPrank();
         shipParams = ShippingParams({
-            firstName: "firstName",
-            lastName: "lastName",
-            email: "email",
-            country: "country",
-            city: "city",
-            stateOrProvince: "stateOrProvince",
-            postalCode: "postalCode",
-            phone: "phone",
-            addressDetail: "addressDetail"
+            firstName: "thuy",
+            lastName: "do",
+            email: "sgcapsule@gmail.com",
+            country: "vietnam",
+            city: "hcm",
+            stateOrProvince: "hcm",
+            postalCode: "700000",
+            phone: "0123456789",
+            addressDetail: "phu nhuan"
         });
     }
     function testBuyAndHire() public {
@@ -99,6 +127,19 @@ contract FiCamTest is Test {
         });
         orderInputs[0] = input0;
         FICAM.MakeOrder(orderInputs,shipParams,buyer);
+        bytes memory bytesCodeCall = abi.encodeCall(
+            FICAM.MakeOrder,
+            (orderInputs,
+            shipParams,
+            buyer
+            )
+        );
+        console.log("MakeOrder Buy:");
+        console.logBytes(bytesCodeCall);
+        console.log(
+            "-----------------------------------------------------------------------------"
+        );  
+
         Product[] memory productsAfter = FICAM.UserViewProduct();
         uint256 storageAfter = productsAfter[0].storageQuantity;
         vm.stopPrank();       
@@ -124,6 +165,18 @@ contract FiCamTest is Test {
         });
         orderInputs[0] = input0;
         bytes32 orderId = FICAM.MakeOrder(orderInputs,shipParams,hirer);
+        bytes memory bytesCodeCall = abi.encodeCall(
+            FICAM.MakeOrder,
+            (orderInputs,
+            shipParams,
+            hirer
+            )
+        );
+        console.log("MakeOrder Hire:");
+        console.logBytes(bytesCodeCall);
+        console.log(
+            "-----------------------------------------------------------------------------"
+        );  
         Product[] memory productsAfter = FICAM.UserViewProduct();
         uint256 storageAfter = productsAfter[0].storageQuantity;
         assertEq(storageAfter,85,"should equal");
