@@ -98,7 +98,7 @@ contract FiCamTest is Test {
         shipParams = ShippingParams({
             firstName: "thuy",
             lastName: "do",
-            email: "sgcapsule@gmail.com",
+            email: "thuyhpvn@yahoo.com.vn",
             country: "vietnam",
             city: "hcm",
             stateOrProvince: "hcm",
@@ -227,6 +227,39 @@ contract FiCamTest is Test {
         uint256 paymentAmount = (5*1250 + 10*(450+68))*ONE_USDT;
         bytes memory getCallData = FICAM.GetCallData(callData,FiCam.ExecuteOrderType.Order);
         FICAM.ExecuteOrder(getCallData,idPayment,paymentAmount);
+        bytes memory bytesCodeCall = abi.encodeCall(
+            FICAM.ExecuteOrder,
+            (
+               getCallData,idPayment,paymentAmount
+            )
+        );
+        console.log("ExecuteOrder Buy/Hire by Visa:");
+        console.logBytes(bytesCodeCall);
+        console.log(
+            "-----------------------------------------------------------------------------"
+        );  
+        bytes32 callDataFEid = FICAM.SetCallDataFE(
+            orderLockInputs,
+            shipParams,
+            buyer,
+            FiCam.ExecuteOrderType.Order,
+            idPayment,
+            paymentAmount        
+        );
+        bytesCodeCall = abi.encodeCall(
+            FICAM.SetCallDataFE,
+            (
+               getCallData,idPayment,paymentAmount
+            )
+        );
+        console.log("ExecuteOrder Buy/Hire by Visa:");
+        console.logBytes(bytesCodeCall);
+        console.log(
+            "-----------------------------------------------------------------------------"
+        );  
+        bytes memory callDataFE = FICAM.GetCallDataFE(callDataFEid);
+        // assertEq(callDataFE,bytesCodeCall,"should equal");
+        assertEq(callDataFE,getCallData,"should equal");
         Product[] memory productsAfter = FICAM.UserViewProduct();
         uint256 storageAfter = productsAfter[0].storageQuantity;
         assertEq(storageAfter,85,"should equal");
@@ -255,5 +288,53 @@ contract FiCamTest is Test {
         expectedNextTime = 1733200899; // 3/12/2024
         assertEq(nextTime,expectedNextTime ,"should equal"); 
         vm.stopPrank();   
+        bytesCodeCall = abi.encodeCall(
+            FICAM.ExecuteOrder,
+            (
+               getCallData,idPayment,paymentAmount
+            )
+        );
+        console.log("Renew by Visa:");
+        console.logBytes(bytesCodeCall);
+        console.log(
+            "-----------------------------------------------------------------------------"
+        );  
+
     }
+    function testAdminUpdateProductInfo()public{
+        vm.startPrank(Deployer);
+        Product[] memory products = FICAM.UserViewProduct();
+        bytes32 id = products[0].id;
+        uint256 salePrice = 1250 *ONE_USDT;
+        uint256 rentalPrice = 450 *ONE_USDT;
+        uint256 monthlyPrice = 68 *ONE_USDT;
+        uint256 sixMonthsPrice = 360 *ONE_USDT;
+        uint256 yearlyPrice = 600 *ONE_USDT;
+        uint256 storageQuantity= 100;
+        uint256 _remainTime = 20000;
+
+        FICAM.AdminUpdateProductInfo(
+            id,
+            "https://i.postimg.cc/kXCcJxt3/5000.png","_desc","_advantages","_videoUrl",
+            salePrice,rentalPrice,monthlyPrice,sixMonthsPrice,yearlyPrice,storageQuantity,
+            _remainTime
+        );
+        vm.stopPrank();
+        bytes memory bytesCodeCall = abi.encodeCall(
+            FICAM.AdminUpdateProductInfo,
+            (
+                id,
+            "https://i.postimg.cc/kXCcJxt3/5000.png","_desc","_advantages","_videoUrl",
+            salePrice,rentalPrice,monthlyPrice,sixMonthsPrice,yearlyPrice,storageQuantity,
+            _remainTime
+            )
+        );
+        console.log("AdminUpdateProductInfo 1:");
+        console.logBytes(bytesCodeCall);
+        console.log(
+            "-----------------------------------------------------------------------------"
+        );  
+
+    }
+
 }

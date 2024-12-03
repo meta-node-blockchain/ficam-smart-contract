@@ -28,7 +28,7 @@ contract FiCam is UsePos{
     mapping(address => mapping(bytes32 => mapping(bytes32 => uint256))) nextTimePay;  //hirer => orderId => idProduct => next time pay
     mapping(address => mapping(bytes32 => mapping(bytes32 => uint256))) mRentalPay; //hirer => orderId => idProduct => rental pay
     mapping(address => mapping(bytes32 => mapping(bytes32 => OrderInput))) mRentalInput; //hirer => orderId => idProduct => rental pay
-
+    mapping(bytes32 => bytes) public mCallData;
     bytes32[] public OrderIDs;
     address public POS;
     struct EventInput {
@@ -46,7 +46,6 @@ contract FiCam is UsePos{
         Order,
         Renew
     }
-
     event eBuyProduct(EventInput eventOrder);
     event Hire(
         address buyer,
@@ -85,7 +84,6 @@ contract FiCam is UsePos{
         );
         _;
     }
-
     function SetPOS(address _pos) external onlyOwner {
         POS = _pos;
     }
@@ -147,7 +145,6 @@ contract FiCam is UsePos{
 
         ListProductID.push(idPro);
     }
-
     function AdminActiveProduct(bytes32 _id) external onlyAdmin returns (bool) {
         mIDToProduct[_id].active = true;
         for (uint256 i = 0; i < ActiveProduct.length; i++) {
@@ -158,7 +155,6 @@ contract FiCam is UsePos{
         ActiveProduct.push(_id);
         return true;
     }
-
     function AdminDeactiveProduct(
         bytes32 _id
     ) external onlyAdmin returns (bool) {
@@ -174,7 +170,6 @@ contract FiCam is UsePos{
         }
         return true;
     }
-
     function AdminUpdateProductInfo(
         bytes32 _id,
         string memory _imgUrl,
@@ -204,7 +199,6 @@ contract FiCam is UsePos{
         product.updateAt = block.timestamp;
         return true;
     }
-
     function AdminEditUpdateAt(
         bytes32 _id,
         uint256 _updateAt
@@ -212,7 +206,6 @@ contract FiCam is UsePos{
         mIDToProduct[_id].updateAt = _updateAt;
         return true;
     }
-
     function AdminViewProduct()
         external
         view
@@ -225,7 +218,6 @@ contract FiCam is UsePos{
         }
         return products;
     }
-
     function UserViewProduct()
         external
         view
@@ -237,7 +229,6 @@ contract FiCam is UsePos{
         }
         return _products;
     }
-
     function ViewProducts(
         uint256 _updateAt,
         uint256 _index,
@@ -265,22 +256,18 @@ contract FiCam is UsePos{
             rs[i] = ps[i];
         }
     }
-
     function ViewProduct(bytes32 _id) public view returns (Product memory rs) {
         return mIDToProduct[_id];
     }
-
     function updateViewCount(bytes32 _productID) public {
         mProductViewCount[_productID]++;
         mProductSearchTrend[_productID].push(block.timestamp);
     }
-
     function getProductViewCount(
         bytes32 _productID
     ) public view returns (uint256) {
         return mProductViewCount[_productID];
     }
-
     function getProductTrend(
         bytes32 _productID
     ) public view returns (uint256[] memory) {
@@ -349,7 +336,6 @@ contract FiCam is UsePos{
         emit EmailOrder(shipParams.email,order,totalPrice);
         return orderId;
     }
-
     function _rent(
         OrderInput memory input,
         bytes32 _orderId,
@@ -390,7 +376,6 @@ contract FiCam is UsePos{
         rentalAmount = mRentalPay[hirer][_orderId][_idProduct] ;
         nextTime = nextTimePay[hirer][_orderId][_idProduct];
     }
-
     function RenewSub(bytes32 _orderId, bytes32 _idProduct) external returns(bool) {
         address to = mIDTOOrder[_orderId].customer;
         uint256 rentalAmount = mRentalPay[to][_orderId][_idProduct];
@@ -426,7 +411,6 @@ contract FiCam is UsePos{
     function getmIDTOOrder(bytes32 _orderId)external view returns(Order memory){
         return mIDTOOrder[_orderId];
     }
-
     function getProductTrendByTime(
         bytes32 _productID,
         uint256 _from,
@@ -435,7 +419,6 @@ contract FiCam is UsePos{
         uint256[] memory arr = mProductSearchTrend[_productID];
         count = countElementsInRange(_from,_to,arr);
     }
-
     function countElementsInRange(uint beginTime, uint endTime,uint256[] memory sortedArray) public pure returns (uint256 count) {
         require(beginTime <= endTime, "Invalid time range");
 
@@ -446,8 +429,6 @@ contract FiCam is UsePos{
             count = endIndex - startIndex + 1;
         }
     }
-
-    // Helper function to find the index for the given value
     function findIndex(uint value, bool isLowerBound,uint256[] memory sortedArray) internal pure returns (uint256) {
         uint left = 0;
         uint right = sortedArray.length;
@@ -508,12 +489,11 @@ contract FiCam is UsePos{
             }
         }
     }
-
     function CallDataOrder(
         OrderInput[] memory _input,
         ShippingParams memory _shipParams,       
         address _address
-    ) public pure returns (bytes memory callData) {
+    ) public pure returns (bytes memory action) {
         return abi.encode(_input,_shipParams, _address);
     }
     function CallDataRenew(
@@ -522,12 +502,26 @@ contract FiCam is UsePos{
     ) public pure returns (bytes memory callData) {
         return abi.encode(_orderId,_idProduct);
     }
-
     function GetCallData(
-        bytes memory callData,
+        bytes memory action,
         ExecuteOrderType typ
-    )public pure returns(bytes memory action){
-        return abi.encode(callData,typ);
+    )public pure returns(bytes memory callData){
+        return abi.encode(action,typ);
+    }
+    function GetCallDataFE(bytes32 _idCalldata)public view returns(bytes memory){
+        return mCallData[_idCalldata];
+    }
+    function SetCallDataFE(
+        OrderInput[] memory _input,
+        ShippingParams memory _shipParams,       
+        address _address,
+        ExecuteOrderType typ
+    )public returns(bytes32 idCallData){
+        bytes memory action = abi.encode(_input,_shipParams, _address);
+        bytes memory callData = abi.encode(action,typ);
+        idCallData = keccak256(abi.encodePacked(_address,typ,block.timestamp));
+        mCallData[idCallData] = callData;
+        return idCallData;
     }
     function ExecuteOrder(
         bytes memory callData,
@@ -547,7 +541,6 @@ contract FiCam is UsePos{
         }
         return false;
     }
-
     function OrderLock(
         bytes memory callData,
         bytes32 idPayment,
@@ -649,5 +642,4 @@ contract FiCam is UsePos{
         );
         return true;
     }
-
 }

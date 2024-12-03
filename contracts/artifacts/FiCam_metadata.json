@@ -826,7 +826,7 @@
 				"outputs": [
 					{
 						"internalType": "bytes",
-						"name": "callData",
+						"name": "action",
 						"type": "bytes"
 					}
 				],
@@ -909,7 +909,7 @@
 				"inputs": [
 					{
 						"internalType": "bytes",
-						"name": "callData",
+						"name": "action",
 						"type": "bytes"
 					},
 					{
@@ -922,11 +922,30 @@
 				"outputs": [
 					{
 						"internalType": "bytes",
-						"name": "action",
+						"name": "callData",
 						"type": "bytes"
 					}
 				],
 				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_idCalldata",
+						"type": "bytes32"
+					}
+				],
+				"name": "GetCallDataFE",
+				"outputs": [
+					{
+						"internalType": "bytes",
+						"name": "",
+						"type": "bytes"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -1300,6 +1319,104 @@
 				],
 				"name": "SetAdmin",
 				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"components": [
+							{
+								"internalType": "bytes32",
+								"name": "id",
+								"type": "bytes32"
+							},
+							{
+								"internalType": "uint256",
+								"name": "quantity",
+								"type": "uint256"
+							},
+							{
+								"internalType": "enum SUBCRIPTION_TYPE",
+								"name": "typ",
+								"type": "uint8"
+							}
+						],
+						"internalType": "struct OrderInput[]",
+						"name": "_input",
+						"type": "tuple[]"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "firstName",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "lastName",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "email",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "country",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "city",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "stateOrProvince",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "postalCode",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "phone",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "addressDetail",
+								"type": "string"
+							}
+						],
+						"internalType": "struct ShippingParams",
+						"name": "_shipParams",
+						"type": "tuple"
+					},
+					{
+						"internalType": "address",
+						"name": "_address",
+						"type": "address"
+					},
+					{
+						"internalType": "enum FiCam.ExecuteOrderType",
+						"name": "typ",
+						"type": "uint8"
+					}
+				],
+				"name": "SetCallDataFE",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "idCallData",
+						"type": "bytes32"
+					}
+				],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
@@ -2082,6 +2199,25 @@
 						"type": "bytes32"
 					}
 				],
+				"name": "mCallData",
+				"outputs": [
+					{
+						"internalType": "bytes",
+						"name": "",
+						"type": "bytes"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
 				"name": "mIDToProduct",
 				"outputs": [
 					{
@@ -2422,11 +2558,11 @@
 			]
 		},
 		"contracts/FiCam.sol": {
-			"keccak256": "0xa2f2a0d658c95422aea3981ed9373f52f7e309678fdfd7ea500ae2eb2fce38bb",
+			"keccak256": "0xa16961c911efecc0bfe6134ea310b54a5f773b3aa2dca6ef112d32333f843610",
 			"license": "SEE LICENSE IN LICENSE",
 			"urls": [
-				"bzz-raw://26dd2e8583dd5aa96f9ff0efd7399719e3c8b6e7154a696f83d4c6b38c05d82e",
-				"dweb:/ipfs/QmWpQV7XZJdbmKTJZip1ZcSpfMroa8HVPvReNrxs4GdKAU"
+				"bzz-raw://954389cd93e62ed17d21c1015c7d7bbdcd7c4d5ac861e090d91b5268c5156bc0",
+				"dweb:/ipfs/QmSuHVrxjk6VcJdhwZ5Xj7Pn1cr3nHdQxyF6eGN1kt8Yrf"
 			]
 		},
 		"contracts/abstract/use_pos.sol": {
